@@ -1,0 +1,47 @@
+version: '2'
+services:
+
+  odoo:
+    image: kittiu/odoo-pabi2:1
+    container_name: odoo8
+    ports:
+      - "8069:8069"
+    environment:
+      PGHOST: db
+      PGUSER: odoo
+      PGPASSWORD: odoo
+    volumes_from:
+      - odoo8_data
+    depends_on:
+      - db
+    links:
+      - db
+    restart: always
+
+  db:
+    image: postgres:9.6
+    container_name: odoo8-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes_from:
+      - db_data
+    restart: always
+
+  db_data:
+    image: busybox
+    container_name: odoo8-db_data
+    volumes:
+      - ./docker_data/db:/var/lib/postgresql/data
+    restart: always
+
+  odoo8_data:
+    image: busybox
+    container_name: odoo8_data
+    volumes:
+      - /home/kittiu/workspace/odoo:/mnt/odoo
+      - /home/kittiu/workspace/pabi2:/mnt/extra-addons
+      - /home/kittiu/workspace/pabi2/conf:/etc/odoo
+    restart: always

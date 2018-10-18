@@ -1,0 +1,4 @@
+Notes:
+======
+- Currenty, things works except when I add external path for pabi2
+  it shows error of not getting css files.
